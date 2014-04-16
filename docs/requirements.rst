@@ -30,7 +30,7 @@ Doc App Requirements
 ------------------------------
 
 **R002 Display Documentation**
-    The app must list all available documentation and display the previously generated HTML documents that contain the documentation.
+    The app must list all available documentation that the user is authorized to see and display the previously generated HTML documents that contain the documentation.
 
 **R003 Access to different Versions**
     The documentation for each version of a project must be available.
@@ -54,13 +54,13 @@ Doc App Requirements
     The user must be notified when a new version of a documentation is available having an option to download the new files.
 
 **R010 Automatically update the Index**
-    Whenever the app has access to the internet the index of available documentation should be updated.
+    Whenever the app has access to the internet the index of available documentation should be updated. Which documents are part of the submitted index depends on the permissions of the user as determined by the server. 
 
 **R011 Error Handling**
     The app must notify the user when it has no access to the internet.
 
 **R012 Authentication**
-    In order to access non public documentation the client must authenticate itself with a shared secret.
+    In order to access non-public documentation the client must authenticate itself with the credentials that are stored locally in the app and submitted when the server is queried.
 
 Web Service Requirements
 ------------------------
@@ -75,7 +75,7 @@ Web Service Requirements
     The nexiles|starter doc app must have a way to query the service for the documentation zip files, the index and the meta data.
 
 **R104 Create Index on the Fly**
-    The server must create an index (for the client) on the fly when queried.
+    The server must create an index (for the client) on the fly when queried. Depending on the credentials submitted by the client, the documents and meta data to be included therein must be determined.
 
 **R105 User and User Groups**
     The web service should support a privileges system with users and groups that have access to a certain set of documentation.
