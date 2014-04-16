@@ -48,8 +48,8 @@ Participants
 Project Time Tracking
 =====================
 
-We use the following codes to track time::
+We use the following codes to track time:
 
     :Project name: Nexiles Documentation Project
-    :Project url:  |url here|
+    :Project url:  
 
