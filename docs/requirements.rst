@@ -18,7 +18,7 @@ Assumptions and Prerequisites
 **Target Platform**
   MAC OSX, Windows
 
-* Documentation is generated in HTML files by Sphinx.
+Documentation is generated in HTML files by Sphinx.
 
 Requirements
 ============
@@ -84,7 +84,7 @@ Web Service Requirements
     The server must have a management system with a user interface.
 
 **R107 User Administration**
-    The management system must allow for the administration of users, groups and their permissions to view documentation.
+    The management system must allow for the administration of users, groups and their permissions to view documentation and to push new documentation to the web service. A user can be given administrative privileges such as the management of documentation.
 
 **R108 Documentation Management**
     The management system should contain an interface for the management of all available documentation files and the server structure.
