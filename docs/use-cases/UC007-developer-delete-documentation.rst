@@ -22,7 +22,7 @@ Actors
 Rationale
 =========
 
-A developer has to delete documentation that is no longer needed or has to be replaced. This can be done with the documentation management interface of the web service.
+A developer must be able to delete documentation that is no longer needed or has to be replaced. This can be done with the documentation management interface of the web service.
 
 Preconditions
 =============

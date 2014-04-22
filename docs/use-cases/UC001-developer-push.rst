@@ -22,7 +22,7 @@ Actors
 Rationale
 =========
 
-The developer has written a documentation and finished the work on the project. Now he wants to publish his documentation somehow to finish the release of his project. The documentation then has to be accessible to his customer, other developers, consultants etc. but not in every case the documentation should be public.
+The developer has written a documentation and finished the work on the project. Now he wants to publish his documentation to finish the release of his project. The documentation then has to be accessible to his customer, other developers, consultants etc. but not in every case the documentation should be public.
 
 Preconditions
 =============
@@ -50,7 +50,7 @@ Postcondition
 Normal Flow
 ===========
 
-Anton executes the build scripts for his project and its documentation. The HTML files of the documentation are automatically built using the pre-installed Nexiles Theme for Sphinx. Then he executes the script to publish the documentation files which connects to the web service with the login credentials provided by Anton. The developer can choose whether to make the documentation public or not. If the documentation must not be public, the documentation is only accessible internally and can be made available to customers on the management platform of the web service. Anton worked on a project that only his customer should see, so he chooses not to make the documentation public. After he has pushed the files to the web service Anton opens the doc app from the nexiles|starter where his documentation is shown as released. For his customer to be able to access the documentation, too, the customer has to be given access to the documentation using the management interface of the web service. Anton logs in on the website and navigates to the system for documentation management. As he has already released several versions of this project to his customer, he can easily add the existing user to the users allowed to view his new documentation.
+Anton executes the build scripts for the project and its documentation. The HTML files of the documentation are automatically built using the pre-installed Nexiles Theme for Sphinx. Then he executes the script to publish the documentation files which connects to the web service with the login credentials provided by Anton. The script returns a completion message when the submit was successful. The developer can choose whether to make the documentation public or not. If the documentation must not be public, the documentation is only accessible internally and can be made available to customers on the management platform of the web service. Anton worked on a project that only his customer should see, so he chooses not to make the documentation public. After he has pushed the files to the web service Anton opens the doc app from the nexiles|starter where his documentation is shown in the section of released projects. For his customer to be able to access the documentation, too, the customer has to be given access to the documentation using the management interface of the web service. Anton logs in on the website and navigates to the system for documentation management. As he has already released several versions of this project to his customer, he can easily add the existing user to the users allowed to view his new documentation.
 
 Notes
 =====

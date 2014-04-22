@@ -27,8 +27,8 @@ To view new documentation for their products the consultants can open the doc ap
 Preconditions
 =============
 
-- The app must have access to the internet.
-- The documentation must exist on the web service.
+- The app must have access to the web service.
+- The requested documentation must exist on the web service.
 - The login credentials must be stored in the app.
 - Anton must have the permission to access the documentation.
 
@@ -40,14 +40,14 @@ Invariants
 Postcondition
 =============
 
-- The HTML files and the zip file must be stored in a new subdirectory for the new version.
-- The new version of the documentation must be viewable.
-- The new version has the same icon as the other documents.
+- The HTML files and the zip file must be stored in a new subdirectory for the new version or the new project.
+- The new documentation must be viewable in the app.
+- The new documentation has the same icon as the other documents.
 
 Normal Flow
 ===========
 
-Anton starts the doc app from nexiles|starter clicking on its icon. The app opens up and shows all released documentations.
+Anton starts the doc app from nexiles|starter by clicking on its icon. The app opens up and shows all released documentation.
 As Anton has also access to internal files he switches to a view of all latest documentation where he finds a new documentation. The icon of the new documentation indicates that he has not yet downloaded its files.
 He clicks on the icon and the download of the documentation begins showing him a the progress of the download in a small indicator.
 After the download has finished the documentation opens up in a new tab. The focus lies on this tab which fills the whole space of the app.
@@ -59,7 +59,7 @@ Notes
 =====
 
 - The login credentials saved in the app are checked by the web service every time the index is updated or new files are downloaded.
-- The index thus the information which apps to display is updated with the start of the app.
+- The index and thus the information which documents are displayed is updated with the start of the app.
 
 .. vim: set spell spelllang=en ft=rst tw=75 nocin nosi ai sw=4 ts=4 expandtab:
 

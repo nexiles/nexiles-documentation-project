@@ -30,9 +30,9 @@ The doc app can be used by end-users to find tutorials and documentation for the
 Preconditions
 =============
 
-- The app must have access to the internet.
-- Fred must have pushed a new version of the documentation accessed by Anton to the web service.
-- Fred or another administrator of the web service must have granted Anton's company the permission to view this documentation.
+- The app must have access to the web service.
+- Fred has pushed a new version of the documentation accessed by Anton to the web service.
+- Fred or another administrator of the web service has granted Anton's company the permission to view this documentation.
 - The app that Anton uses must have stored the right login credentials for his company.
 
 Invariants
@@ -50,7 +50,7 @@ Postcondition
 Normal Flow
 ===========
 
-From the nexiles|starter Anton opens the doc app which shows all released documentation that is available for his company. He clicks on a documentation that Fred has published some time ago and receives a message saying that a new version of the documentation is available. He has the option to download the new version or continue opening the old one. He chooses to download the new documentation. A small progress bar shows that the download has started. When the download finishes the new documentation opens up in a new tab. The new documentation looks the same as the old one but some new parts of documentation are added to the document.
+From the nexiles|starter Anton opens the doc app which shows all released documentation that is available for his company. He clicks on a documentation that Fred has published some time ago and receives a message saying that a new version of the documentation is available. He has the option to download the new version or continue opening the old one. He chooses to download the new documentation. A small progress bar shows that the download has started. When the download finishes the new documentation opens up in a new tab. The new documentation looks the same as the old one but some new parts of documentation have been added to the document.
 
 Notes
 =====

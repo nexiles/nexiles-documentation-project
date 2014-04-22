@@ -1,8 +1,8 @@
 .. _UC005:
 
-=========================================
-UC005: View internal Files on the Website
-=========================================
+=================================================
+UC005: View internal Documentation on the Website
+=================================================
 
 :Author:    Jan Müller
 :Date:      2014-04-17
@@ -49,7 +49,7 @@ Anton navigates to the website in his web browser. On the website he can only se
 Notes
 =====
 
-- The documentation files must be stored on the server as zip files and as unpacked HTML directories that can be accessed by a browser.
+- The documentation files must be stored on the server as zip files and as unpacked HTML directories that can be accessed served to a browser.
 
 .. vim: set spell spelllang=en ft=rst tw=75 nocin nosi ai sw=4 ts=4 expandtab:
 

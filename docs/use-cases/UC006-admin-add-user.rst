@@ -25,7 +25,7 @@ Actors
 Rationale
 =========
 
-The administrator must be able to add a new user with specific permissions e.g. give a new developer only access to certain documentation and no permission to push public documentation to the service. In addition to that the interface must also provide a way to add an customer user that has only access to released documentation and no right to push documentation to the service.
+The administrator must be able to add a new user with specific permissions e.g. give a new developer only access to certain documentation and no permission to push public documentation to the service. In addition to that the interface must also provide a way to add a customer as a user that has only access to released documentation and no right to push documentation to the service.
 
 Preconditions
 =============
@@ -46,7 +46,7 @@ Postcondition
 Normal Flow
 ===========
 
-Anton does not want to give Fred the default developer login credentials, so he adds a new user. He can access the management interface over his browser after he has logged in. He navigates to the management interface for users and a list of all existing users and their privileges is shown. On the top of the list new users can be added with a click on a button. A small configuration form for the new user is displayed beginning with options for the user group (administrator, internal, developer, end-user etc.) and more detailed options which permissions the user should be given. Non public documents that the user must be able to view can be added here or in the documentation management interface. Anton adds the new user to the developer group but chooses not to grant the permission to push public documentation to the web service. As default a developer can view all documentation on the service but Anton restricts the available documents to the ones Fred requires. Then Anton clicks on the button to add the user and gives the login credentials that he has set to Fred.
+Anton does not want to give Fred the default developer login credentials, so he adds a new user. He can access the management interface over his browser after he has logged in. He navigates to the management interface for users and a list of all existing users and their privileges is shown. On the top of the list new users can be added with a click on a button. A small configuration form for the new user is displayed beginning with options for the user group (administrator, internal, developer, end-user etc.) and more detailed options which permissions the user should be given. Non public documents that the user must be able to view can be added here or on the documentation management interface. Anton adds the new user to the developer group but chooses not to grant the permission to push public documentation to the web service. A default developer user can view all documentation on the service but Anton restricts the available documents to the ones Fred requires. Then Anton clicks on the button to add the user and gives the login credentials that he has set to Fred.
 
 Notes
 =====
