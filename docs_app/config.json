@@ -34,8 +34,8 @@
         "docs_url":         "http://localhost:8080/Plone/@@API/docs/api/1.0/",
         "docs_remote_icon": "{{app_path}}/images/doc_icon_remote.svg",
         "docs_icon":        "{{app_path}}/images/doc_icon.svg",
-        "docs_user":        "doc_admin",
-        "docs_password":    "secret"
+        "docs_user":        "XXX",
+        "docs_password":    "XXX"
     },
     // ---------------------------------------------------------
     // App Code Definition
