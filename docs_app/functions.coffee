@@ -147,6 +147,10 @@ Ext.define  "DocApp.view.Docs",
     getCurrentFilter: ->
         @query('radiofield[name=state]')[0].getGroupValue()
 
+    setFilter: (filter) ->
+        @query('radiofield[name=state]')[0].setValue filter
+        @updateFilter()
+
     updateFilter: ->
         @store.clearFilter()
         filter = @getCurrentFilter()
@@ -210,7 +214,7 @@ Ext.define  "DocApp.store.Docs",
         else if i >= v2.length
           result = 1
           break;
-        result = parseInt(v1[i])-parseInt(v2[i])
+        result = parseInt(v1[i], 10)-parseInt(v2[i], 10)
         break if result isnt 0
       return result
 
@@ -332,7 +336,10 @@ Ext.define "DocApp",
 
     downloadIcon: (record) ->
         url = record.get "icon"
-        if url is @joinPaths(@getDefaultDocsRemoteIcon(), "icon.png") then return
+        if url is @getDefaultDocsRemoteIcon()
+          finishDownload()
+          return
+
         dir = @joinPaths @getLocalDocsPath(), record.get("name"), "icon.png"
 
         file = fs.createWriteStream dir
@@ -347,8 +354,12 @@ Ext.define "DocApp",
         .on "error", (err) =>
           console.error "Download failed: " + err.message
           fs.unlinkSync dir
-          @store.reload()
-        file.on "finish", =>
+          finishDownload()
+
+        file.on "finish", finishDownload
+
+        finishDownload = =>
+          @view.setFilter "local"
           @store.reload()
 
     download: (record) ->
@@ -363,6 +374,7 @@ Ext.define "DocApp",
         mkdirp dir, (err) =>
           if err
             console.error err
+            error "Directory Creation failed"
             return
 
           console.log "Created doc directory in " + dir
@@ -377,13 +389,7 @@ Ext.define "DocApp",
               console.log "Data downloaded to " + zipdir
           .on "error", (err) =>
             console.error "Download failed: " + err.message
-            @rmdir dir
-            @store.reload()
-            Ext.Msg.show
-              title: "Error"
-              msg: "The Download Failed"
-              buttons: Ext.Msg.OK
-              icon: Ext.Msg.ERROR
+            error "The Download Failed"
 
           file.on "finish", =>
             try
@@ -393,13 +399,17 @@ Ext.define "DocApp",
               @downloadIcon(record)
             catch err
               console.error err
-              @rmdir dir
-              @store.reload()
-              Ext.Msg.show
-                title: "Error"
-                msg: "Unpacking ZIP Failed"
-                buttons: Ext.Msg.OK
-                icon: Ext.Msg.ERROR
+              error "Unpacking ZIP Failed"
+
+        error = (e) =>
+          @rmdir dir
+          if fs.existsSync zipdir then fs.unlinkSync zipdir
+          @store.reload()
+          Ext.Msg.show
+            title: "Error"
+            msg: e
+            buttons: Ext.Msg.OK
+            icon: Ext.Msg.ERROR
 
 
     removeRemotesOf: (records) ->
@@ -423,6 +433,8 @@ Ext.define "DocApp",
         @app_view.queryById "docpanel"
 
     rmdir: (dir) ->
+      return if not fs.existsSync dir
+
       path = require "path"
 
       rm = (dir) ->
