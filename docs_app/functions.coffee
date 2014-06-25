@@ -221,8 +221,10 @@ Ext.define  "DocApp.store.Docs",
 # Controller
 # ----------------------------------------------------------------------------
 fs = require "fs"
+path = require "path"
 http = require "http"
 mkdirp = require "mkdirp"
+AdmZip = require "adm-zip"
 
 Ext.define "DocApp",
     extend: "Ext.Base"
@@ -334,82 +336,93 @@ Ext.define "DocApp",
           cb(result)
         failure: error
 
-    downloadIcon: (record) ->
+    downloadIcon: (record, end) ->
         url = record.get "icon"
         if url is @getDefaultDocsRemoteIcon()
-          finishDownload()
+          end "No icon specified"
           return
 
         dir = @joinPaths @getLocalDocsPath(), record.get("name"), "icon.png"
 
         file = fs.createWriteStream dir
+        file.on "finish", ->
+          end null
 
         http.get url, (response) ->
           response.on("data", (data) ->
             console.log "Downloading icon from " + url
-            file.write(data)
+            file.write data
           ).on "end", ->
             file.end()
             console.log "Icon downloaded to " + dir
         .on "error", (err) =>
-          console.error "Download failed: " + err.message
-          fs.unlinkSync dir
-          finishDownload()
+          if fs.existsSync dir then fs.unlinkSync dir
+          end err
 
-        file.on "finish", finishDownload
+    downloadZip: (record, dir, end) ->
+        zipurl = record.get("zip")
+        zip = dir + ".zip"
 
-        finishDownload = =>
-          @view.setFilter "local"
-          @store.reload()
+        file = fs.createWriteStream zip
+        file.on "finish", =>
+          if @unzip(zip, dir) then end null
+          else end "unzip error"
 
-    download: (record) ->
-        AdmZip = require "adm-zip"
+        req = http.get zipurl, (response) ->
+          response.on("data", (data) ->
+            console.log "Downloading zip file from " + zipurl
+            file.write data
+          ).on "end", ->
+            file.end()
+            console.log "Data downloaded to " + zip
+        .on "error", (err) =>
+          @error "The Download Failed"
+          @rmdir dir
+          if fs.existsSync zip then fs.unlinkSync zip
+          end err
 
-        fileurl = record.get("zip")
-        basedir = @joinPaths @getLocalDocsPath(), record.get("name")
-        dir = @joinPaths basedir, record.get("version")
-        zipdir = dir + ".zip"
-
-        @panel.setLoading true
-        mkdirp dir, (err) =>
-          if err
-            console.error err
-            error "Directory Creation failed"
-            return
-
-          console.log "Created doc directory in " + dir
-          file = fs.createWriteStream zipdir
-
-          req = http.get fileurl, (response) ->
-            response.on("data", (data) ->
-              console.log "Downloading zip file from " + fileurl
-              file.write(data)
-            ).on "end", ->
-              file.end()
-              console.log "Data downloaded to " + zipdir
-          .on "error", (err) =>
-            console.error "Download failed: " + err.message
-            error "The Download Failed"
-
-          file.on "finish", =>
-            try
-              console.log "Unpacking files to " + dir
-              zip = new AdmZip zipdir
-              zip.extractAllTo dir, yes
-              @downloadIcon(record)
-            catch err
-              console.error err
-              error "Unpacking ZIP Failed"
-
-        error = (e) =>
+    unzip: (file, dir) ->
+        try
+          console.log "Unpacking files to " + dir
+          zip = new AdmZip file
+          zip.extractAllTo dir, yes
+          return true
+        catch err
+          @error "Unpacking ZIP Failed"
           @rmdir dir
           if fs.existsSync zipdir then fs.unlinkSync zipdir
+          return false
+
+    download: (record) ->
+        dir = @joinPaths @getLocalDocsPath(), record.get("name"), record.get("version")
+        @panel.setLoading true
+        done = false
+
+        mkdirp dir, (err) =>
+          if err
+            @error "Directory Creation failed"
+            end(err)
+            return
+          console.log "Created doc directory in " + dir
+
+          @downloadZip record, dir, end
+          @downloadIcon record, end
+
+        end = (err) =>
+          console.error err if err
+          if not done
+            done=true
+            return
           @store.reload()
-          Ext.Msg.show
-            title: "Error"
-            msg: e
-            buttons: Ext.Msg.OK
-            icon: Ext.Msg.ERROR
+          @view.setFilter "local" if not err
+
+
+    error: (e) ->
+      Ext.Msg.show
+        title: "Error"
+        msg: e
+        buttons: Ext.Msg.OK
+        icon: Ext.Msg.ERROR
 
 
     removeRemotesOf: (records) ->
@@ -434,8 +447,6 @@ Ext.define "DocApp",
 
     rmdir: (dir) ->
       return if not fs.existsSync dir
-
-      path = require "path"
 
       rm = (dir) ->
         list = fs.readdirSync dir
