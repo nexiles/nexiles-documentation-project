@@ -19,16 +19,16 @@
 #                 name: "remote.documentation",
 #                 version: "0.2",
 #                 state: "released",
-#                 url: "http://docs.dev/remote.documentation/v0.2/index.html",
-#                 zip: "http://docs.dev/remote.documentation/v0.2.zip",
-#                 icon: "http://docs.dev/remote.documentation/icon.png"
+#                 url: "http://docs.dev.com/remote.documentation/v0.2/index.html",
+#                 zip: "http://docs.dev.com/remote.documentation/v0.2.zip",
+#                 icon: "http://docs.dev.com/remote.documentation/icon.png"
 #             },{
 #                 name: "remote.documentation",
 #                 version: "0.3",
-#                 state: "released",
-#                 url: "http://docs.dev/remote.documentation/0.3/index.html",
-#                 zip: "http://docs.dev/remote.documentation/0.3.zip",
-#                 icon: "http://docs.dev/remote.documentation/icon.png"
+#                 state: "internal",
+#                 url: "http://docs.dev.com/remote.documentation/0.3/index.html",
+#                 zip: "http://docs.dev.com/remote.documentation/0.3.zip",
+#                 icon: null
 #             }
 #         ]
 #     }
@@ -154,7 +154,9 @@ Ext.define  "DocApp.view.Docs",
     updateFilter: ->
         @store.clearFilter()
         filter = @getCurrentFilter()
-        if filter is "all" then return
+
+        return if filter is "all"
+
         if filter is "latest"
           @store.filterBy (item) =>
             group = @store.getGroups(item.get("name")).children
@@ -166,6 +168,7 @@ Ext.define  "DocApp.view.Docs",
             return max is item
 
           return
+
         @store.filterBy (item) ->
             if item.get("state") == filter
                 return yes
@@ -505,9 +508,9 @@ Ext.define "DocApp",
             icon: Ext.Msg.QUESTION
             fn: (button) =>
               if button is "yes" then @download record
-              else
-                @open record
+              else @open record
           return
+          
         @open record
 
     onItemContextMenu: (view, record, item, index, e, eOpts) ->
