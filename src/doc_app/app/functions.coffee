@@ -182,7 +182,6 @@ Ext.define  "DocApp.store.Docs",
     model:  "DocApp.model.Doc"
     autoLoad: yes
     sorters: [
-      property: "version"
       sorterFn: @compareRecords
     ]
     groupers: [
@@ -207,25 +206,21 @@ Ext.define  "DocApp.store.Docs",
       return 0 if r1 is r2
       v1 = r1.get("version").replace("v", "").split('.')
       v2 = r2.get("version").replace("v", "").split('.')
-      if v1.length >= v2.length then lim = v1.length
-      else
-        lim = v2.length
-      for i in [0..lim]
-        if i >= v1.length
-          result = -1
-          break;
-        else if i >= v2.length
-          result = 1
-          break;
+
+      lim = v1.length
+      if lim > v2.length then lim = v2.length
+
+      for i in [0..lim-1]
         result = parseInt(v1[i], 10)-parseInt(v2[i], 10)
-        break if result isnt 0
-      return result
+        return sign(result) if result isnt 0
+
+      return sign(v1.length - v2.length)
 
 # Controller
 # ----------------------------------------------------------------------------
 fs = require "fs"
 path = require "path"
-http = require "http"
+request = require "request"
 mkdirp = require "mkdirp"
 AdmZip = require "adm-zip"
 
@@ -347,54 +342,43 @@ Ext.define "DocApp",
 
         dir = @joinPaths @getLocalDocsPath(), record.get("name"), "icon.png"
 
-        file = fs.createWriteStream dir
-        file.on "finish", ->
-          end null
+        request(url, (error) ->
+          if not error
+            console.log "Downloaded icon to " + dir
+            end null
+            return
 
-        http.get url, (response) ->
-          response.on("data", (data) ->
-            console.log "Downloading icon from " + url
-            file.write data
-          ).on "end", ->
-            file.end()
-            console.log "Icon downloaded to " + dir
-        .on "error", (err) =>
           if fs.existsSync dir then fs.unlinkSync dir
           end err
+        ).pipe fs.createWriteStream dir
 
     downloadZip: (record, dir, end) ->
         zipurl = record.get("zip")
         zip = dir + ".zip"
 
-        file = fs.createWriteStream zip
-        file.on "finish", =>
-          if @unzip(zip, dir) then end null
-          else end "unzip error"
+        request(zipurl, (error) =>
+          if not error
+            console.log "Downloaded zip files to " + zip
+            end @unzip(zip, dir)
+            return
 
-        req = http.get zipurl, (response) ->
-          response.on("data", (data) ->
-            console.log "Downloading zip file from " + zipurl
-            file.write data
-          ).on "end", ->
-            file.end()
-            console.log "Data downloaded to " + zip
-        .on "error", (err) =>
           @error "The Download Failed"
           @rmdir dir
           if fs.existsSync zip then fs.unlinkSync zip
           end err
+        ).pipe fs.createWriteStream zip
 
     unzip: (file, dir) ->
         try
           console.log "Unpacking files to " + dir
           zip = new AdmZip file
           zip.extractAllTo dir, yes
-          return true
+          return null
         catch err
           @error "Unpacking ZIP Failed"
           @rmdir dir
-          if fs.existsSync zipdir then fs.unlinkSync zipdir
-          return false
+          if fs.existsSync file then fs.unlinkSync file
+          return err
 
     download: (record) ->
         dir = @joinPaths @getLocalDocsPath(), record.get("name"), record.get("version")
@@ -410,6 +394,8 @@ Ext.define "DocApp",
 
           @downloadZip record, dir, end
           @downloadIcon record, end
+
+          console.log "Download was started"
 
         end = (err) =>
           console.error err if err
@@ -510,7 +496,7 @@ Ext.define "DocApp",
               if button is "yes" then @download record
               else @open record
           return
-          
+
         @open record
 
     onItemContextMenu: (view, record, item, index, e, eOpts) ->
@@ -528,5 +514,17 @@ Ext.define "DocApp",
 # Register Class in the Starter Framework
 # ----------------------------------------------------------------------------
 window.AppDelegate.registerClass "doc_app", DocApp
+
+# Browser Compatibility Functions
+# ----------------------------------------------------------------------------
+
+if not Math.sign
+  sign = (x) ->
+    if typeof x is "number"
+      if x
+        if x < 0 then -1 else 1
+      else if x is x then 0 else NaN
+    else NaN
+else sign = Math.sign
 
 # vim: set ft=coffee ts=4 sw=4 expandtab :
