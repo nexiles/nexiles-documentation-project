@@ -9,6 +9,14 @@ Install the Doc App
 Installation in an existing nexiles.starter
 ===========================================
 
+The starter must require the following node modules in its package.json::
+
+    "dependencies": {
+        "mkdirp": "~0.5.0",
+        "adm-zip": "~0.4.4",
+        "request": "^2.36.0"
+    }
+
 In the starter directory copy the doc app to resources/app_config/
 Then modify resources/app_config/config.json in order to add "doc_app" to the
 "apps" array. After restarting the nexiles.starter the doc app should appear as
@@ -22,13 +30,13 @@ directory. You should only modify the settings object. The following options can
 be set there::
 
     "settings": {
-            "docs_path": Path to the local documentation folder,
-            "docs_url":  Absolute URL to the doc server JSON API,
-            "docs_remote_icon": Absolute URL to the default icon for remote documentation,
-            "docs_icon": Absolute URL to the default icon for local documentation,
-            "docs_user": Username of the Plone user,
-            "docs_password": Password of the Plone user
-        }
+        "docs_path": Path to the local documentation folder,
+        "docs_url":  Absolute URL to the doc server JSON API,
+        "docs_remote_icon": Absolute URL to the default icon for remote documentation,
+        "docs_icon": Absolute URL to the default icon for local documentation,
+        "docs_user": Username of the Plone user,
+        "docs_password": Password of the Plone user
+    }
 
 The app path can be inserted with::
 
