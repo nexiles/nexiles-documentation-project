@@ -15,7 +15,9 @@ Contents:
    requirements
    use-cases/index
    server-solutions
-   use-plone
+   install-plone
+   install-doc-app
+   changelog
 
 
 

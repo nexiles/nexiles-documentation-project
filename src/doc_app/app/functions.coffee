@@ -35,13 +35,14 @@
 #
 # Configuration Help:
 #
-#    "settings": {
-#        "docs_path": Path to the local documentation folder,
-#        "docs_url":  Absolute URL to the docs server,
-#        "docs_icon": Absolute URL to the default image,
-#        "docs_user": Username of the Plone user,
-#        "docs_password": Password of the Plone user
-#    }
+#     "settings": {
+#         "docs_path": Path to the local documentation folder,
+#         "docs_url":  Absolute URL to the doc server JSON API,
+#         "docs_remote_icon": Absolute URL to the default icon for remote documentation,
+#         "docs_icon": Absolute URL to the default icon for local documentation,
+#         "docs_user": Username of the Plone user,
+#         "docs_password": Password of the Plone user
+#     }
 
 
 # Model
