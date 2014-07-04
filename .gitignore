@@ -52,5 +52,5 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-docs_app/docs/
-docs_app/functions.js
+
+src/doc_app/app/*.js
