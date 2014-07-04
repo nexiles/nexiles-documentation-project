@@ -31,7 +31,7 @@
     // Application Settings
     "settings": {
         "docs_path":        "{{app_path}}/docs",
-        "docs_url":         "http://localhost:8080/Plone/@@API/docs/api/1.0/",
+        "docs_url":         "http://192.168.100.86/Plone/@@API/docs/api/1.0/",
         "docs_remote_icon": "{{app_path}}/images/doc_icon_remote.svg",
         "docs_icon":        "{{app_path}}/images/doc_icon.svg",
         "docs_user":        "XXX",
