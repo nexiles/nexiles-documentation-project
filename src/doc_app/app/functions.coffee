@@ -305,6 +305,8 @@ Ext.define "DocApp",
 
     addLocalDocs: ->
         basepath  =  @getLocalDocsPath()
+        return unless fs.existsSync basepath
+
         filenames = fs.readdirSync basepath
 
         for filename in filenames
@@ -349,7 +351,7 @@ Ext.define "DocApp",
             end null
             return
 
-          if fs.existsSync dir then fs.unlinkSync dir
+          fs.unlinkSync dir if fs.existsSync dir
           end err
         ).pipe fs.createWriteStream dir
 
@@ -357,39 +359,43 @@ Ext.define "DocApp",
         zipurl = record.get("zip")
         zip = dir + ".zip"
 
+        file = fs.createWriteStream zip
+        file.on "finish", =>
+          end @unzip(dir, record)
+
         request(zipurl, (error) =>
           if not error
             console.log "Downloaded zip files to " + zip
-            end @unzip(zip, dir)
             return
 
-          @error "The Download Failed"
           @rmdir dir
-          if fs.existsSync zip then fs.unlinkSync zip
-          end err
-        ).pipe fs.createWriteStream zip
+          fs.unlinkSync zip if fs.existsSync zip
+          @error "The Download Failed", record
+          end error
+        ).pipe file
 
-    unzip: (file, dir) ->
+    unzip: (dir, record) ->
+        file = dir + ".zip"
+        console.log "Unpacking files to " + dir
         try
-          console.log "Unpacking files to " + dir
           zip = new AdmZip file
           zip.extractAllTo dir, yes
           return null
-        catch err
-          @error "Unpacking ZIP Failed"
+        catch error
           @rmdir dir
-          if fs.existsSync file then fs.unlinkSync file
-          return err
+          fs.unlinkSync file if fs.existsSync file
+          @error "Unpacking ZIP Failed", record
+          return error
 
     download: (record) ->
         dir = @joinPaths @getLocalDocsPath(), record.get("name"), record.get("version")
         @panel.setLoading true
         done = false
 
-        mkdirp dir, (err) =>
-          if err
-            @error "Directory Creation failed"
-            end(err)
+        mkdirp dir, (error) =>
+          if error
+            @error "Directory Creation failed", record
+            end error
             return
           console.log "Created doc directory in " + dir
 
@@ -404,15 +410,18 @@ Ext.define "DocApp",
             done=true
             return
           @store.reload()
-          @view.setFilter "local" if not err
+          @view.setFilter "local" unless err
 
 
-    error: (e) ->
+    error: (e, record) ->
       Ext.Msg.show
         title: "Error"
-        msg: e
-        buttons: Ext.Msg.OK
+        msg: e + " Retry?"
+        buttons: Ext.Msg.YESNO
         icon: Ext.Msg.ERROR
+        fn: (button) =>
+          return if button is "no"
+          @download record
 
 
     removeRemotesOf: (records) ->
@@ -436,7 +445,7 @@ Ext.define "DocApp",
         @app_view.queryById "docpanel"
 
     rmdir: (dir) ->
-      return if not fs.existsSync dir
+      return unless fs.existsSync dir
 
       rm = (dir) ->
         list = fs.readdirSync dir
