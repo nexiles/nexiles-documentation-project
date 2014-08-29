@@ -17,6 +17,7 @@ Contents:
    server-solutions
    install-plone
    install-doc-app
+   nginx-config
    changelog
 
 
