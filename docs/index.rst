@@ -18,6 +18,7 @@ Contents:
    plone
    ldap-config
    nginx-config
+   backup
    doc-app
    changelog
 

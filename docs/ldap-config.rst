@@ -25,6 +25,8 @@ install it by reinstalling the plone.docs Add-on. Installing it this way ensures
 the LDAP configuration for the pdc01.prd.de.nexiles.intra Active Directory is
 included as well. The only thing that remains to do is to enter the correct
 password for the user "ldap".
+You have to do this in `/usr/local/Plone/zeocluster/src/plone.docs/plone/docs/profiles/default/ldap_plugin.xml`
+by setting the property "_bindpwd" before installing the Add-on.
 
 .. caution:: Never install the "LDAPUserFolder CMF Tools" Add-on as it completely bricks
              your site and you have to "Undo" the installation via the ZMI.
@@ -61,5 +63,12 @@ You can also refer to this table for the pdc01.prd.de.nexiles.intra configuratio
 +----------------------------+------------------------------------------------------------+
 | `Read Only`                | True                                                       |
 +----------------------------+------------------------------------------------------------+
+
+Troubleshooting
+===============
+
+If the full names and/or emails of your LDAP users are not displayed, check that
+the LDAP plugin is the first plugin in the list of enabled Properties Plugins.
+The plugins can be found in ZMI under acl_users/plugins/manage_plugins?plugin_type=IPropertiesPlugin
 
 .. vim: set spell spelllang=en ft=rst tw=75 nocin nosi ai sw=4 ts=4 expandtab:
