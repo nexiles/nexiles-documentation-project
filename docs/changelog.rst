@@ -7,6 +7,34 @@ Change Log
 plone.docs
 ==========
 
+0.2.1 - unreleased
+------------------
+
+**backend version**
+    0.2.1
+
+**frontend version**
+    0.2
+
+**Enhancements**
+
+- https://github.com/nexiles/nexiles.administration/issues/67
+
+  Added LDAP authentication to Plone
+
+- The URLs generated for docmetas now include the project ID
+
+**Bug fixes**
+
+- Avoid waking up objects requested via other APIs than the docs API. This fixes
+  possibly missing UIDs in the JSON API.
+
+- Fix erroneous package dependencies
+
+**Documentation**
+
+- Added ldap configuration docs
+
 0.2 - 2014-08-29
 ----------------
 

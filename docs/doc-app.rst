@@ -1,6 +1,6 @@
-===================
-Install the Doc App
-===================
+===========
+The Doc App
+===========
 
 :Author:    Jan Müller
 :Date:      |today|

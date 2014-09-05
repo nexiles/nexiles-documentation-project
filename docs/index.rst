@@ -15,9 +15,10 @@ Contents:
    requirements
    use-cases/index
    server-solutions
-   install-plone
-   install-doc-app
+   plone
+   ldap-config
    nginx-config
+   doc-app
    changelog
 
 
