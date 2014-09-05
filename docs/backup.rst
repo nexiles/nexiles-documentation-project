@@ -20,7 +20,10 @@ To `/etc/cron.d/zeopack` add::
 
 To `/etc/cron.d/plonebackup` add::
 
-    42 3 * * * plone_daemon /usr/local/Plone/zeocluster/bin/snapshotbackup
+    42 3 * * * plone_daemon /usr/local/Plone/zeocluster/bin/backup
+
+This configuration will make an incremental backup every day and once a week
+pack the ZODB. By default the backups will be located at `/backup/plone`.
 
 .. _Github: https://github.com/nexiles/nexiles.docserver.buildout
 
