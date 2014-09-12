@@ -14,7 +14,7 @@ plone.docs
     0.2.1
 
 **frontend version**
-    0.2
+    0.7
 
 **Enhancements**
 
@@ -28,6 +28,9 @@ plone.docs
 
 - Avoid waking up objects requested via other APIs than the docs API. This fixes
   possibly missing UIDs in the JSON API.
+
+- Set session data when an authenticated user requests the login route. Fixes
+  authentication problems in the doc app.
 
 - Fix erroneous package dependencies
 
