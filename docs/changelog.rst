@@ -7,7 +7,7 @@ Change Log
 plone.docs
 ==========
 
-0.2.1 - unreleased
+0.2.1 - 2014-09-12
 ------------------
 
 **backend version**
